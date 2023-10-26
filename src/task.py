@@ -3,8 +3,9 @@ from kx.config import *
 from concrete import Motor,Lock,Container,Dosator,Weight,Readiness,Loaded,Manager,MSGate,Mixer,Factory,Accelerator
 from concrete.vibrator import UnloadHelper,Vibrator
 from concrete.imitation import iMOTOR,iGATE,iVALVE,iWEIGHT
+from _version import version
 
-print('Starting up PYPLC-231019 project!')
+print(f'Starting up PYPLC-231019 {version}!')
 plc,hw = kx_init( )
 instances = [] #here should be listed user defined programs
 
