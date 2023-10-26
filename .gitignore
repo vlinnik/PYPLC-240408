@@ -4,3 +4,4 @@ src/upydev_.config
 vars.txt
 persist.dat
 __pycache__
+_version.py
