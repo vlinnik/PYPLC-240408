@@ -1,0 +1,12 @@
+{
+  "paths": {
+    "root": "src"
+  },
+  "tools": {
+    "upydev": "",
+    "miniterm": "",
+    "web_repl": ""
+  },
+  "target": "/dev/ttyUSB0        ",
+  "is_serial": true
+}

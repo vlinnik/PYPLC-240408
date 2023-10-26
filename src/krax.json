@@ -1,0 +1,68 @@
+{
+    "layout": [
+        "b4:8a:0a:8f:05:84",
+        "b4:8a:0a:8f:00:04",
+        "b4:8a:0a:8f:1b:10",
+        "b4:8a:0a:8e:f7:0c",
+        "b4:8a:0a:8e:ef:7c",
+        "b4:8a:0a:8e:fd:00",
+        "24:d7:eb:10:51:dc",
+        "24:d7:eb:10:e1:f8",
+        "24:d7:eb:10:6e:58"
+    ],
+    "devs": [
+        "KRAX AI-455",
+        "KRAX AI-455",
+        "KRAX DO-530",
+        "KRAX DO-530",
+        "KRAX DO-530",
+        "KRAX DO-530",
+        "KRAX DI-430",
+        "KRAX DI-430",
+        "KRAX DI-430"
+    ],
+    "slots": [
+        8,
+        8,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+    ],
+    "sta": {
+        "enabled": true,
+        "mask": "0.0.0.0",
+        "gw": "0.0.0.0",
+        "pass": "",
+        "essid": "",
+        "ipv4": "0.0.0.0",
+        "static": false
+    },
+    "eth": {
+        "ipv4": "192.168.2.10",
+        "mask": "255.255.255.0",
+        "gw": "192.168.2.1",
+        "static": true,
+        "enabled": true
+    },
+    "ap": {
+        "enabled": true,
+        "mask": "255.255.255.0",
+        "gw": "192.168.4.1",
+        "pass": "",
+        "essid": "ESP_76452D",
+        "ipv4": "192.168.4.1",
+        "static": false
+    },
+    "init": {
+        "flags": 0,
+        "iface": 0,
+        "hostname": "krax",
+        "rate": 12
+    },
+    "node_id": 1,
+    "scanTime" : 150
+}
