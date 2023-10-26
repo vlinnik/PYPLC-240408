@@ -1,2 +1,5 @@
 frozen
 src/upydev_.config
+.gitignore
+vars.txt
+persist.dat
