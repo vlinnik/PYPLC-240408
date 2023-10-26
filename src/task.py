@@ -5,7 +5,7 @@ from concrete.vibrator import UnloadHelper,Vibrator
 from concrete.imitation import iMOTOR,iGATE,iVALVE,iWEIGHT
 from _version import version
 
-print(f'Starting up PYPLC-231019 {version}!')
+print(f'Starting up PYPLC-231019 {version}')
 plc,hw = kx_init( )
 instances = [] #here should be listed user defined programs
 
