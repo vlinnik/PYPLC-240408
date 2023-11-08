@@ -28,38 +28,39 @@ addition_2 = Container(m=lambda: additions_m_1.m, out = plc.APUMP_ON_2, closed =
 dadditions_1 = Dosator(m=lambda: additions_m_1.m, closed=plc.DADDITIONS_CLOSED_1, out=plc.DADDITIONS_OPEN_1,containers=[addition_1,addition_2], fast=additions_m_1.mode, lock=Lock(key=lambda: hw.APUMP_ON_1 or hw.APUMP_ON_2), unloadT=0, id='dadditions_1')
 
 fillers_m_1  = Weight(mmax=2000, raw=plc.FILLERS_M_1, id='fillers_m_1')
-# accel_1 = Accelerator(outs=[plc.FILLER_OPEN_1, plc.FILLER_OPEN_2], sts=[
-#                       plc.FILLER_CLOSED_1, plc.FILLER_CLOSED_2] )
-filler_1 = Container(m=lambda: fillers_m_1.m, lock=Lock(key=lambda: not hw.DFILLERS_CLOSED_1 or not hw.FILLER_CLOSED_2),
-                     out = plc.FILLER_OPEN_1, closed=plc.FILLER_CLOSED_1, max_sp = 2000, id='filler_1')
+accel_1 = Accelerator(outs=[plc.FILLER_OPEN_1, plc.FILLER_OPEN_2], sts=[
+                      plc.FILLER_CLOSED_1, plc.FILLER_CLOSED_2] )
+# filler_1 = Container(m=lambda: fillers_m_1.m, lock=Lock(key=lambda: not hw.DFILLERS_CLOSED_1),
+#                     closed=lambda: accel_1.closed, max_sp = 2000, id='filler_1')
+filler_1 = Container(m=lambda: fillers_m_1.m, lock=Lock(key=lambda: not hw.DFILLERS_CLOSED_1),
+                     closed=lambda: accel_1.closed, max_sp = 2000, id='filler_1')
+accel_1.link(filler_1)
 filler_2 = Container(m=lambda: fillers_m_1.m, lock=Lock(key=lambda: not hw.DFILLERS_CLOSED_1 or not hw.FILLER_CLOSED_1),
-                     out=plc.FILLER_OPEN_2, closed=plc.FILLER_CLOSED_2, max_sp = 2000, id='filler_1')
+                    max_sp = 2000, id='filler_2')
 dfillers_1 = Dosator(m=lambda: fillers_m_1.m, out = plc.DFILLERS_OPEN_1, closed = plc.DFILLERS_CLOSED_1, 
                      containers=[filler_1,filler_2], lock = Lock( key = lambda: not hw.FILLER_CLOSED_1 or not hw.FILLER_CLOSED_2 or not hw.MIXER_ISON_1 ) ,id='dfillers_1') 
-vibrator_1 = Vibrator( containers=[filler_1], weight=fillers_m_1, q = plc.VIBRATOR_ON_1 , id='vibrator_1')
-vibrator_2 = Vibrator( containers=[filler_2], weight=fillers_m_1, q = plc.VIBRATOR_ON_2 , id='vibrator_2')
+vibrator_1 = Vibrator( containers=[plc.FILLER_OPEN_1], weight=fillers_m_1, q = plc.VIBRATOR_ON_1 , id='vibrator_1')
+vibrator_2 = Vibrator( containers=[plc.FILLER_OPEN_2], weight=fillers_m_1, q = plc.VIBRATOR_ON_2 , id='vibrator_2')
 df_vibrator_1 = UnloadHelper( dosator=dfillers_1, weight=fillers_m_1,point = 100,q = plc.DF_VIBRATOR_ON_1,id='df_vibrator_1' )
-
-# accel_1.link(filler_1)
 
 fillers_m_2  = Weight(mmax=2000, raw=plc.FILLERS_M_2, id='fillers_m_2')
 filler_3 = Container(m=lambda: fillers_m_2.m, out = plc.FILLER_OPEN_3, closed = plc.FILLER_CLOSED_3, lock = Lock( key = ~plc.DFILLERS_CLOSED_2) ,id='filler_3') 
 dfillers_2 = Dosator(m=lambda: fillers_m_2.m, out = plc.DFILLERS_OPEN_2, closed = plc.DFILLERS_CLOSED_2, 
                      containers=[filler_3],lock = Lock( key = lambda: not hw.FILLER_CLOSED_3 or not hw.MIXER_ISON_1) ,id='dfillers_2') 
-vibrator_3 = Vibrator( containers=[filler_3], weight=fillers_m_2, q = plc.VIBRATOR_ON_3 )
+vibrator_3 = Vibrator( containers=[plc.FILLER_OPEN_3], weight=fillers_m_2, q = plc.VIBRATOR_ON_3 )
 df_vibrator_2 = UnloadHelper( dosator=dfillers_2, weight=fillers_m_2,point = 100,q = plc.DF_VIBRATOR_ON_2,id='df_vibrator_2' )
 
 fillers_m_3  = Weight(mmax=2000, raw=plc.FILLERS_M_3, id='fillers_m_3')
 filler_4 = Container(m=lambda: fillers_m_3.m, out = plc.FILLER_OPEN_4, closed = plc.FILLER_CLOSED_4, lock = Lock( key = ~plc.DFILLERS_CLOSED_3) ,id='filler_4') 
 dfillers_3 = Dosator(m=lambda: fillers_m_3.m, out = plc.DFILLERS_OPEN_3, closed = plc.DFILLERS_CLOSED_3, 
                      containers=[filler_4], lock = Lock( key = lambda: not hw.FILLER_CLOSED_4 or not hw.MIXER_ISON_1 ) ,id='dfillers_3') 
-vibrator_4 = Vibrator( containers=[filler_4], weight=fillers_m_3, q = plc.VIBRATOR_ON_4, id='vibrator_4' )
+vibrator_4 = Vibrator( containers=[plc.FILLER_OPEN_4], weight=fillers_m_3, q = plc.VIBRATOR_ON_4, id='vibrator_4' )
 df_vibrator_3 = UnloadHelper( dosator=dfillers_3, weight=fillers_m_3,point = 100,q = plc.DF_VIBRATOR_ON_3,id='df_vibrator_3' )
 
 # смеситель №1
 motor_1 = Motor(on=plc.MIXER_ON_1, off=plc.MIXER_OFF_1, ison=plc.MIXER_ISON_1, id='motor_1')
 gate_1 = MSGate(closed=plc.MIXER_CLOSED_1, open=plc.MIXER_OPEN_1,opened=plc.MIXER_OPENED_1, id='gate_1')
-mixer_1 = Mixer(motor=motor_1, gate=gate_1,  flows=[s.q for s in [silage_1,water_1,addition_1,addition_2,filler_1,filler_2,filler_3,filler_4]], id='mixer_1')
+mixer_1 = Mixer(motor=motor_1, gate=gate_1,  flows=[s.q for s in [silage_1,water_1,addition_1,addition_2,filler_1,filler_2,filler_3,filler_4]],use_ack=False, id='mixer_1')
 
 ready_1 = Readiness( [ mixer_1,dcement_1,dwater_1,dadditions_1,dfillers_1,dfillers_2,dfillers_3 ] )
 loaded_1 = Loaded([dcement_1,dwater_1,dadditions_1,dfillers_1,dfillers_2,dfillers_3] )
@@ -69,10 +70,10 @@ factory_1.on_mode = [x.switch_mode for x in [dcement_1,dwater_1,dadditions_1,dfi
 factory_1.on_emergency = [x.emergency for x in [manager_1,dcement_1,dwater_1,dadditions_1,dfillers_1,dfillers_2,dfillers_3, mixer_1, gate_1]] + [loaded_1.clear,ready_1.clear ]
 
 instances+=[factory_1,cement_m_1,silage_1,dcement_1,dc_vibrator_1,water_m_1,water_1,dwater_1, additions_m_1, addition_1,addition_2, dadditions_1, 
-            fillers_m_1, filler_1, filler_2, dfillers_1, vibrator_1,vibrator_2,df_vibrator_1,
+            fillers_m_1, filler_1, dfillers_1, vibrator_1,vibrator_2,df_vibrator_1,
             fillers_m_2, filler_3, dfillers_2, vibrator_3,df_vibrator_2,
             fillers_m_3, filler_4, dfillers_3, vibrator_4,df_vibrator_3,
-            motor_1,gate_1,mixer_1,ready_1,loaded_1,manager_1]
+            motor_1,gate_1,mixer_1,ready_1,loaded_1,manager_1,accel_1]
 
 plc.config(persist=board.eeprom)
 
@@ -105,6 +106,16 @@ plc.config(persist=board.eeprom)
 # imitations = [igate_1,imotor_1,icement_m_1,isilage_1, idcement_1, iwater_m_1,iwater_1,idwater_1,iadditions_m_1,iaddition_1,iaddition_2,idadditions_1,ifillers_m_1,ifiller_1,ifiller_2,idfillers_1,
 #               ifillers_m_2,ifiller_3,idfillers_2, ifillers_m_3,ifiller_4,idfillers_3]
 # instances += imitations 
+
+print('Heating up...')
+for i in range(0,10):   #разогрев
+    with plc:
+        pass
+print('Normal operation starts...')
+# mixer_1.qreset = True
+# for i in instances:
+#    i( )
+# mixer_1.qreset = False
 
 while True:
   with plc(ctx=globals()):

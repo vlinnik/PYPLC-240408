@@ -1,7 +1,7 @@
 from kx.config import *
 
 def main():
-    plc,hw = kx_init( passive=True)
+    plc,hw = kx_init( )
 
     try:
         while True:

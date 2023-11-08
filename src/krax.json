@@ -1,25 +1,25 @@
 {
     "layout": [
-        "b4:8a:0a:8f:05:84",
-        "b4:8a:0a:8f:00:04",
-        "b4:8a:0a:8f:1b:10",
-        "b4:8a:0a:8e:f7:0c",
-        "b4:8a:0a:8e:ef:7c",
-        "b4:8a:0a:8e:fd:00",
-        "24:d7:eb:10:51:dc",
-        "24:d7:eb:10:e1:f8",
-        "24:d7:eb:10:6e:58"
+        "b4:8a:0a:8e:ff:d8",
+        "b4:8a:0a:8f:10:f4",
+        "24:d7:eb:10:70:a0",
+        "b4:8a:0a:8e:fb:40",
+        "b4:8a:0a:8f:10:64",
+        "b4:8a:0a:8f:11:4c",
+        "b4:8a:0a:8e:fb:18",
+        "b4:8a:0a:8f:19:44",
+        "b4:8a:0a:8e:fc:d8"
     ],
     "devs": [
         "KRAX AI-455",
         "KRAX AI-455",
-        "KRAX DO-530",
-        "KRAX DO-530",
-        "KRAX DO-530",
-        "KRAX DO-530",
         "KRAX DI-430",
         "KRAX DI-430",
-        "KRAX DI-430"
+        "KRAX DI-430",
+        "KRAX DO-530",
+        "KRAX DO-530",
+        "KRAX DO-530",
+        "KRAX DO-530"
     ],
     "slots": [
         8,
@@ -64,5 +64,6 @@
         "rate": 12
     },
     "node_id": 1,
-    "scanTime" : 150
+    "scanTime" : 150,
+    "via" : "127.0.0.1"
 }
