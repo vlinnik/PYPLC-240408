@@ -4,6 +4,7 @@ from machine import Pin
 
 sta = network.WLAN(0)
 ap = network.WLAN(1)
+sta.active(True)
 
 try:
 	eth = network.LAN(mdc=Pin(23),mdio=Pin(18),power=Pin(4),id=None,phy_addr=1,phy_type=network.PHY_LAN8720)
