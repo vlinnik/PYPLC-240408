@@ -3,6 +3,7 @@ from kx.config import *
 from concrete import Motor,Lock,Container,Dosator,Weight,Readiness,Loaded,Manager,MSGate,Mixer,Factory,Accelerator
 from concrete.vibrator import UnloadHelper,Vibrator
 from concrete.imitation import iMOTOR,iGATE,iVALVE,iWEIGHT
+from pyplc.utils.misc import BLINK
 from _version import version
 
 print(f'Starting up PYPLC-231019 {version}')
@@ -16,6 +17,7 @@ silage_1 = Container(m=lambda: cement_m_1.m, out = plc.CEMENT_OPEN_1, closed = p
 dcement_1 = Dosator(m=lambda: cement_m_1.m, closed=plc.DCEMENT_CLOSED_1, out=plc.DCEMENT_OPEN_1,
                     containers=[silage_1], fast=cement_m_1.mode, lock=Lock(key=lambda: not hw.CEMENT_CLOSED_1 or not hw.MIXER_ISON_1), unloadT=0, id='dcement_1')
 dc_vibrator_1 = UnloadHelper( dosator=dcement_1, weight=cement_m_1,point = 100,q = plc.DC_VIBRATOR_ON_1,id='dc_vibrator_1' )
+aerator_1 = BLINK(enable=plc.CEMENT_OPEN_1,t_on = 200, t_off= 3000,q = plc.AERATOR_ON_1 )
 
 water_m_1 = Weight(mmax=500, raw=plc.WATER_M_1, id='water_m_1')
 water_1 = Container(m=lambda: water_m_1.m, out = plc.WATER_OPEN_1, closed = plc.WATER_CLOSED_1, lock = Lock( key = ~plc.DWATER_CLOSED_1) ,id='water_1') 
@@ -73,7 +75,7 @@ instances+=[factory_1,cement_m_1,silage_1,dcement_1,dc_vibrator_1,water_m_1,wate
             fillers_m_1, filler_1, dfillers_1, vibrator_1,vibrator_2,df_vibrator_1,
             fillers_m_2, filler_3, dfillers_2, vibrator_3,df_vibrator_2,
             fillers_m_3, filler_4, dfillers_3, vibrator_4,df_vibrator_3,
-            motor_1,gate_1,mixer_1,ready_1,loaded_1,manager_1,accel_1]
+            motor_1,gate_1,mixer_1,ready_1,loaded_1,manager_1,accel_1,aerator_1]
 
 plc.config(persist=board.eeprom)
 
