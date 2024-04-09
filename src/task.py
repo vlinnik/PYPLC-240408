@@ -17,7 +17,8 @@ silage_1 = Container(m=lambda: cement_m_1.m, out = plc.CEMENT_OPEN_1, closed = p
 dcement_1 = Dosator(m=lambda: cement_m_1.m, closed=plc.DCEMENT_CLOSED_1, out=plc.DCEMENT_OPEN_1,
                     containers=[silage_1], fast=cement_m_1.mode, lock=Lock(key=lambda: not hw.CEMENT_CLOSED_1 or not hw.MIXER_ISON_1), unloadT=0, id='dcement_1')
 dc_vibrator_1 = UnloadHelper( dosator=dcement_1, weight=cement_m_1,point = 100,q = plc.DC_VIBRATOR_ON_1,id='dc_vibrator_1' )
-aerator_1 = BLINK(enable=plc.CEMENT_OPEN_1,t_on = 200, t_off= 3000,q = plc.AERATOR_ON_1 )
+# aerator_1 = BLINK(enable=plc.CEMENT_OPEN_1,t_on = 200, t_off= 3000,q = plc.AERATOR_ON_1 )
+silage_1.bind( 'busy', plc.AERATOR_ON_1 )
 
 water_m_1 = Weight(mmax=500, raw=plc.WATER_M_1, id='water_m_1')
 water_1 = Container(m=lambda: water_m_1.m, out = plc.WATER_OPEN_1, closed = plc.WATER_CLOSED_1, lock = Lock( key = ~plc.DWATER_CLOSED_1) ,id='water_1') 
@@ -75,39 +76,39 @@ instances+=[factory_1,cement_m_1,silage_1,dcement_1,dc_vibrator_1,water_m_1,wate
             fillers_m_1, filler_1, dfillers_1, vibrator_1,vibrator_2,df_vibrator_1,
             fillers_m_2, filler_3, dfillers_2, vibrator_3,df_vibrator_2,
             fillers_m_3, filler_4, dfillers_3, vibrator_4,df_vibrator_3,
-            motor_1,gate_1,mixer_1,ready_1,loaded_1,manager_1,accel_1,aerator_1]
+            motor_1,gate_1,mixer_1,ready_1,loaded_1,manager_1,accel_1]
 
 plc.config(persist=board.eeprom)
 
-# igate_1 = iGATE( simple=True, open = plc.MIXER_OPEN_1, closed = plc.MIXER_CLOSED_1.force,opened = plc.MIXER_OPENED_1.force )
-# imotor_1 = iMOTOR(on = plc.MIXER_ON_1,off=plc.MIXER_OFF_1,ison=plc.MIXER_ISON_1.force )
-# icement_m_1 = iWEIGHT( speed=100, loading = ~plc.CEMENT_CLOSED_1,unloading=~plc.DCEMENT_CLOSED_1,q = plc.CEMENT_M_1.force)
-# isilage_1 = iVALVE(open=plc.CEMENT_OPEN_1, closed=plc.CEMENT_CLOSED_1.force )
-# idcement_1 = iVALVE( open = plc.DCEMENT_OPEN_1, closed = plc.DCEMENT_CLOSED_1.force )
+igate_1 = iGATE( simple=True, open = plc.MIXER_OPEN_1, closed = plc.MIXER_CLOSED_1.force,opened = plc.MIXER_OPENED_1.force )
+imotor_1 = iMOTOR(on = plc.MIXER_ON_1,off=plc.MIXER_OFF_1,ison=plc.MIXER_ISON_1.force )
+icement_m_1 = iWEIGHT( speed=100, loading = ~plc.CEMENT_CLOSED_1,unloading=~plc.DCEMENT_CLOSED_1,q = plc.CEMENT_M_1.force)
+isilage_1 = iVALVE(open=plc.CEMENT_OPEN_1, closed=plc.CEMENT_CLOSED_1.force )
+idcement_1 = iVALVE( open = plc.DCEMENT_OPEN_1, closed = plc.DCEMENT_CLOSED_1.force )
 
-# iwater_m_1 = iWEIGHT( speed=100, loading = ~plc.WATER_CLOSED_1,unloading=~plc.DWATER_CLOSED_1,q = plc.WATER_M_1.force)
-# iwater_1 = iVALVE(open=plc.WATER_OPEN_1, closed=plc.WATER_CLOSED_1.force )
-# idwater_1 = iVALVE( open = plc.DWATER_OPEN_1, closed = plc.DWATER_CLOSED_1.force )
+iwater_m_1 = iWEIGHT( speed=100, loading = ~plc.WATER_CLOSED_1,unloading=~plc.DWATER_CLOSED_1,q = plc.WATER_M_1.force)
+iwater_1 = iVALVE(open=plc.WATER_OPEN_1, closed=plc.WATER_CLOSED_1.force )
+idwater_1 = iVALVE( open = plc.DWATER_OPEN_1, closed = plc.DWATER_CLOSED_1.force )
 
-# iadditions_m_1 = iWEIGHT( speed=100,loading = lambda: hw.APUMP_ON_1 or hw.APUMP_ON_2, unloading = plc.DADDITIONS_OPEN_1, q = plc.ADDITIONS_M_1.force)
-# iaddition_1 = iMOTOR(simple=True,on = plc.APUMP_ON_1, ison=plc.APUMP_ISON_1.force)
-# iaddition_2 = iMOTOR(simple=True,on = plc.APUMP_ON_2, ison=plc.APUMP_ISON_2.force)
-# idadditions_1 = iVALVE( open = plc.DADDITIONS_OPEN_1, closed = plc.DADDITIONS_CLOSED_1.force )
+iadditions_m_1 = iWEIGHT( speed=100,loading = lambda: hw.APUMP_ON_1 or hw.APUMP_ON_2, unloading = plc.DADDITIONS_OPEN_1, q = plc.ADDITIONS_M_1.force)
+iaddition_1 = iMOTOR(simple=True,on = plc.APUMP_ON_1, ison=plc.APUMP_ISON_1.force)
+iaddition_2 = iMOTOR(simple=True,on = plc.APUMP_ON_2, ison=plc.APUMP_ISON_2.force)
+idadditions_1 = iVALVE( open = plc.DADDITIONS_OPEN_1, closed = plc.DADDITIONS_CLOSED_1.force )
 
-# ifillers_m_1 = iWEIGHT( speed=100,loading = lambda: hw.FILLER_OPEN_1 or hw.FILLER_OPEN_2, unloading = plc.DFILLERS_OPEN_1, q = plc.FILLERS_M_1.force )
-# ifiller_1 = iVALVE( open=plc.FILLER_OPEN_1,closed = plc.FILLER_CLOSED_1.force )
-# ifiller_2 = iVALVE( open=plc.FILLER_OPEN_2,closed = plc.FILLER_CLOSED_2.force )
-# idfillers_1 = iVALVE(open=plc.DFILLERS_OPEN_1,closed=plc.DFILLERS_CLOSED_1.force)
-# ifillers_m_2 = iWEIGHT( speed=100,loading = lambda: hw.FILLER_OPEN_3, unloading = plc.DFILLERS_OPEN_2, q = plc.FILLERS_M_2.force )
-# ifiller_3 = iVALVE( open=plc.FILLER_OPEN_3,closed = plc.FILLER_CLOSED_3.force )
-# idfillers_2 = iVALVE(open=plc.DFILLERS_OPEN_2,closed=plc.DFILLERS_CLOSED_2.force)
-# ifillers_m_3 = iWEIGHT( speed=100,loading = lambda: hw.FILLER_OPEN_4, unloading = plc.DFILLERS_OPEN_3, q = plc.FILLERS_M_3.force )
-# ifiller_4 = iVALVE( open=plc.FILLER_OPEN_4,closed = plc.FILLER_CLOSED_4.force )
-# idfillers_3 = iVALVE(open=plc.DFILLERS_OPEN_3,closed=plc.DFILLERS_CLOSED_3.force)
+ifillers_m_1 = iWEIGHT( speed=100,loading = lambda: hw.FILLER_OPEN_1 or hw.FILLER_OPEN_2, unloading = plc.DFILLERS_OPEN_1, q = plc.FILLERS_M_1.force )
+ifiller_1 = iVALVE( open=plc.FILLER_OPEN_1,closed = plc.FILLER_CLOSED_1.force )
+ifiller_2 = iVALVE( open=plc.FILLER_OPEN_2,closed = plc.FILLER_CLOSED_2.force )
+idfillers_1 = iVALVE(open=plc.DFILLERS_OPEN_1,closed=plc.DFILLERS_CLOSED_1.force)
+ifillers_m_2 = iWEIGHT( speed=100,loading = lambda: hw.FILLER_OPEN_3, unloading = plc.DFILLERS_OPEN_2, q = plc.FILLERS_M_2.force )
+ifiller_3 = iVALVE( open=plc.FILLER_OPEN_3,closed = plc.FILLER_CLOSED_3.force )
+idfillers_2 = iVALVE(open=plc.DFILLERS_OPEN_2,closed=plc.DFILLERS_CLOSED_2.force)
+ifillers_m_3 = iWEIGHT( speed=100,loading = lambda: hw.FILLER_OPEN_4, unloading = plc.DFILLERS_OPEN_3, q = plc.FILLERS_M_3.force )
+ifiller_4 = iVALVE( open=plc.FILLER_OPEN_4,closed = plc.FILLER_CLOSED_4.force )
+idfillers_3 = iVALVE(open=plc.DFILLERS_OPEN_3,closed=plc.DFILLERS_CLOSED_3.force)
 
-# imitations = [igate_1,imotor_1,icement_m_1,isilage_1, idcement_1, iwater_m_1,iwater_1,idwater_1,iadditions_m_1,iaddition_1,iaddition_2,idadditions_1,ifillers_m_1,ifiller_1,ifiller_2,idfillers_1,
-#               ifillers_m_2,ifiller_3,idfillers_2, ifillers_m_3,ifiller_4,idfillers_3]
-# instances += imitations 
+imitations = [igate_1,imotor_1,icement_m_1,isilage_1, idcement_1, iwater_m_1,iwater_1,idwater_1,iadditions_m_1,iaddition_1,iaddition_2,idadditions_1,ifillers_m_1,ifiller_1,ifiller_2,idfillers_1,
+              ifillers_m_2,ifiller_3,idfillers_2, ifillers_m_3,ifiller_4,idfillers_3]
+instances += imitations 
 
 print('Heating up...')
 for i in range(0,10):   #разогрев
