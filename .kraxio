@@ -5,8 +5,15 @@
   "tools": {
     "upydev": "",
     "miniterm": "",
-    "web_repl": ""
+    "web_repl": "",
+    "paths": "/home/vlinnik/.local/lib/python3.10/site-packages/../Scripts/",
+    "enumSerials": "/home/vlinnik/.local/bin/pyserial-ports",
+    "downloader": "/home/vlinnik/.local/bin/rshell",
+    "serialDownloader": "/home/vlinnik/.local/bin/rshell",
+    "telnet": "/usr/bin/telnet",
+    "minicom": "/home/vlinnik/.local/bin/mpremote"
   },
-  "target": "/dev/ttyUSB0        ",
-  "is_serial": true
+  "target": "/dev/ttyUSB0",
+  "is_serial": true,
+  "project" : "PYPLC-231019"
 }
