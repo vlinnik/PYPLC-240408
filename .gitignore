@@ -1,7 +1,7 @@
-frozen
 src/upydev_.config
 .gitignore
 vars.txt
 persist.dat
 __pycache__
 _version.py
+persist.*
