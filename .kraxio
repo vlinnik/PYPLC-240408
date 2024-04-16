@@ -15,5 +15,5 @@
   },
   "target": "/dev/ttyUSB0",
   "is_serial": true,
-  "project": "PYPLC-231019"
+  "project": "PYPLC-240408"
 }
