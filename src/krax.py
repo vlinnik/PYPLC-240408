@@ -49,7 +49,7 @@ vibrator_3 = Vibrator( containers=[plc.FILLER_OPEN_3], weight=fillers_m_3, q = p
 df_vibrator_3 = UnloadHelper( dosator=dfillers_3, weight=fillers_m_3,point = 100,q = plc.DF_VIBRATOR_ON_3 )
 
 # смеситель №1
-motor_1 = Motor(on=plc.MIXER_ON_1, off=plc.MIXER_OFF_1, ison=plc.MIXER_ISON_1)
+motor_1 = Motor(powered=plc.MIXER_ON_1, ison=plc.MIXER_ISON_1)
 gate_1 = MSGate(closed=plc.MIXER_CLOSED_1, open=plc.MIXER_OPEN_1,opened=plc.MIXER_OPENED_1)
 mixer_1 = Mixer(motor=motor_1, gate=gate_1,  flows=[s.q for s in [silage_1,water_1,addition_1,addition_2,filler_1,filler_2,filler_3]],use_ack=False)
 
